@@ -2,6 +2,7 @@ package org.intellij.markdown.gfm
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.MarkdownFlavourDescriptor
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.getParentOfType
@@ -32,14 +33,14 @@ open class GFMFlavourDescriptor(
         useSafeLinks: Boolean = true,
         absolutizeAnchorLinks: Boolean = false,
         private val makeHttpsAutoLinks: Boolean = false
-) {
-     val markerProcessorFactory: MarkerProcessorFactory = GFMMarkerProcessor.Factory
+): MarkdownFlavourDescriptor {
+     override val markerProcessorFactory: MarkerProcessorFactory = GFMMarkerProcessor.Factory
 
-    fun createInlinesLexer(): MarkdownLexer {
+    override fun createInlinesLexer(): MarkdownLexer {
         return MarkdownLexer(_GFMLexer())
     }
 
-    val sequentialParserManager = object : SequentialParserManager() {
+    override val sequentialParserManager = object : SequentialParserManager() {
         override fun getParserSequence(): List<SequentialParser> {
             return listOf(AutolinkParser(listOf(MarkdownTokenTypes.AUTOLINK, GFMTokenTypes.GFM_AUTOLINK)),
                     BacktickParser(),
@@ -50,7 +51,7 @@ open class GFMFlavourDescriptor(
         }
     }
 
-    fun createHtmlGeneratingProviders(linkMap: LinkMap,
+    override fun createHtmlGeneratingProviders(linkMap: LinkMap,
                                                baseURI: URI?): Map<IElementType, GeneratingProvider> {
         return createHtmlGeneratingProviders(linkMap, baseURI) + hashMapOf(
                 GFMElementTypes.STRIKETHROUGH to object : SimpleInlineTagProvider("s", 2, -2) {
