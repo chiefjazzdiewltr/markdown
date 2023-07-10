@@ -1,8 +1,8 @@
-package org.intellij.markdown.flavours.gfm
+package org.intellij.markdown.gfm
 
 import org.intellij.markdown.MarkdownTokenTypes
-import org.intellij.markdown.flavours.commonmark.CommonMarkMarkerProcessor
-import org.intellij.markdown.flavours.gfm.table.GitHubTableMarkerProvider
+import org.intellij.markdown.base.CommonMarkMarkerProcessor
+import org.intellij.markdown.gfm.table.GitHubTableMarkerProvider
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor
 import org.intellij.markdown.parser.MarkerProcessorFactory
@@ -11,14 +11,12 @@ import org.intellij.markdown.parser.constraints.CommonMarkdownConstraints
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
 import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkerBlockProvider
-import org.intellij.markdown.parser.markerblocks.providers.AtxHeaderProvider
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
 import kotlin.math.min
 
-class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: CommonMarkdownConstraints)
-: CommonMarkMarkerProcessor(productionHolder, constraintsBase) {
+class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: CommonMarkdownConstraints): CommonMarkMarkerProcessor(productionHolder, constraintsBase) {
 
-    private val markerBlockProviders = super.getMarkerBlockProviders()
+    private val markerBlockProviders = getMarkerBlockProviders()
             .plus(listOf(GitHubTableMarkerProvider()))
 
     override fun getMarkerBlockProviders(): List<MarkerBlockProvider<StateInfo>> {
@@ -29,7 +27,7 @@ class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: Co
                                            constraints: MarkdownConstraints,
                                            productionHolder: ProductionHolder) {
         if (constraints !is GFMConstraints || !constraints.hasCheckbox()) {
-            super.populateConstraintsTokens(pos, constraints, productionHolder)
+            populateConstraintsTokens(pos, constraints, productionHolder)
             return
         }
 
@@ -39,7 +37,7 @@ class GFMMarkerProcessor(productionHolder: ProductionHolder, constraintsBase: Co
             offset++
         }
         if (offset == line.length) {
-            super.populateConstraintsTokens(pos, constraints, productionHolder)
+            populateConstraintsTokens(pos, constraints, productionHolder)
             return
         }
 

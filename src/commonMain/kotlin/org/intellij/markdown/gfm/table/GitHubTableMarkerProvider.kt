@@ -1,4 +1,4 @@
-package org.intellij.markdown.flavours.gfm.table
+package org.intellij.markdown.gfm.table
 
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.MarkerProcessor

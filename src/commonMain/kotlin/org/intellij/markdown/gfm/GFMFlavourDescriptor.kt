@@ -1,4 +1,4 @@
-package org.intellij.markdown.flavours.gfm
+package org.intellij.markdown.gfm
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
@@ -6,8 +6,7 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.getParentOfType
 import org.intellij.markdown.ast.getTextInNode
-import org.intellij.markdown.flavours.commonmark.CommonMarkFlavourDescriptor
-import org.intellij.markdown.flavours.gfm.lexer._GFMLexer
+import org.intellij.markdown.gfm.lexer._GFMLexer
 import org.intellij.markdown.html.*
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.lexer.MarkdownLexer
@@ -33,14 +32,14 @@ open class GFMFlavourDescriptor(
         useSafeLinks: Boolean = true,
         absolutizeAnchorLinks: Boolean = false,
         private val makeHttpsAutoLinks: Boolean = false
-) : CommonMarkFlavourDescriptor(useSafeLinks, absolutizeAnchorLinks) {
-    override val markerProcessorFactory: MarkerProcessorFactory = GFMMarkerProcessor.Factory
+) {
+     val markerProcessorFactory: MarkerProcessorFactory = GFMMarkerProcessor.Factory
 
-    override fun createInlinesLexer(): MarkdownLexer {
+    fun createInlinesLexer(): MarkdownLexer {
         return MarkdownLexer(_GFMLexer())
     }
 
-    override val sequentialParserManager = object : SequentialParserManager() {
+    val sequentialParserManager = object : SequentialParserManager() {
         override fun getParserSequence(): List<SequentialParser> {
             return listOf(AutolinkParser(listOf(MarkdownTokenTypes.AUTOLINK, GFMTokenTypes.GFM_AUTOLINK)),
                     BacktickParser(),
@@ -51,10 +50,10 @@ open class GFMFlavourDescriptor(
         }
     }
 
-    override fun createHtmlGeneratingProviders(linkMap: LinkMap,
+    fun createHtmlGeneratingProviders(linkMap: LinkMap,
                                                baseURI: URI?): Map<IElementType, GeneratingProvider> {
-        return super.createHtmlGeneratingProviders(linkMap, baseURI) + hashMapOf(
-                GFMElementTypes.STRIKETHROUGH to object : SimpleInlineTagProvider("span", 2, -2) {
+        return createHtmlGeneratingProviders(linkMap, baseURI) + hashMapOf(
+                GFMElementTypes.STRIKETHROUGH to object : SimpleInlineTagProvider("s", 2, -2) {
                     override fun openTag(visitor: HtmlGenerator.HtmlGeneratingVisitor, text: String, node: ASTNode) {
                         visitor.consumeTagOpen(node, tagName, "class=\"user-del\"")
                     }
@@ -87,9 +86,8 @@ open class GFMFlavourDescriptor(
                         }
 
                         val link = EntityConverter.replaceEntities(linkText, true, false)
-                        val normalizedDestination = LinkMap.normalizeDestination(absoluteLink, false).let {
-                            if (useSafeLinks) makeXssSafeDestination(it) else it
-                        }
+                        val normalizedDestination =
+                            makeXssSafeDestination(LinkMap.normalizeDestination(absoluteLink, false))
                         visitor.consumeTagOpen(node, "a", "href=\"$normalizedDestination\"")
                         visitor.consumeHtml(link)
                         visitor.consumeTagClose("a")

@@ -6,7 +6,7 @@ import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.acceptChildren
 import org.intellij.markdown.ast.getTextInNode
 import org.intellij.markdown.ast.visitors.RecursiveVisitor
-import org.intellij.markdown.flavours.MarkdownFlavourDescriptor
+import org.intellij.markdown.MarkdownFlavourDescriptor
 import org.intellij.markdown.html.entities.EntityConverter
 import org.intellij.markdown.parser.LinkMap
 

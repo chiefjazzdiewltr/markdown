@@ -1,4 +1,4 @@
-package org.intellij.markdown.flavours.gfm
+package org.intellij.markdown.gfm
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementType

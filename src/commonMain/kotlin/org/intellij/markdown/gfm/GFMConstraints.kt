@@ -1,4 +1,4 @@
-package org.intellij.markdown.flavours.gfm
+package org.intellij.markdown.gfm
 
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.constraints.CommonMarkdownConstraints

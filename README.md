@@ -1,6 +1,3 @@
-intellij-markdown [![Build Status](https://teamcity.jetbrains.com/app/rest/builds/buildType:(id:IntelliJMarkdownParser_BuildForIdeaPlugin)/statusIcon.svg?guest=1)](https://teamcity.jetbrains.com/viewType.html?buildTypeId=IntelliJMarkdownParser_BuildForIdeaPlugin&guest=1) [![Maven Central](https://img.shields.io/maven-central/v/org.jetbrains/markdown)](https://search.maven.org/artifact/org.jetbrains/markdown) [![official JetBrains project](http://jb.gg/badges/official.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub) [![IR](https://img.shields.io/badge/Kotlin%2FJS-IR%20supported-yellow)](https://kotl.in/jsirsupported)
-=================
-
 ## Multiplatform Markdown processor written in Kotlin
 
 Introduction
@@ -15,6 +12,9 @@ It aims to suit the following needs:
 
 The processor is written in pure [Kotlin] (with a little [flex][jflex]) so it can be compiled to both JS and Java bytecode
 and thus can be used everywhere.
+
+Forked by [chiefjazzdiewltr](https://github.com/chiefjazzdiewltr) originally written by [JetBrains](https://github.com/JetBrains/markdown)
+This fork exists to change the GitHub Markdown parser to use `<s></s>` tags for the strikethrough instead of `<span></span>`
 
 Usage
 -----
@@ -86,28 +86,6 @@ final ASTNode parsedTree = new MarkdownParser(flavour).buildMarkdownTreeFromStri
 final String html = new HtmlGenerator(src, parsedTree, flavour, false).generateHtml()
 ```
 
-Development gotchas
--------------------
-
-1. The currently used CI is [TeamCity](https://teamcity.jetbrains.com/project/IntelliJMarkdownParser?mode=builds).
-
-   Incoming pull requests will be tested there, you can check the build status (manually) via the link above.
-
-
-2. The only non-Kotlin files are `.flex` lexer definitions. They are used for generating lexers which are
-   the first stage of inlines parsing. Unfortunately, due to bugs, native `java->kt` conversion crashes for these files.  
-   
-   So, conversion from `.flex` to respective Kotlin files deserves a special instruction (use IntelliJ please):
-   1. Install `grammar-kit` plugin, as will be suggested on `.flex` files opening.
-   1. Install [`jflexToKotlin`](https://github.com/valich/jflexToKotlin) plugin (manually, via settings). 
-   1. Run `Run JFlex Generator` action while having `.flex` file opened.
-        * On the first run a dialog will open, suggesting to place to download jflex. Select project root,
-          then delete excessively downloaded `.skeleton` file.
-   1. A respective `_<SomeName>Lexer.java` will be generated somewhere. Move it near existing `_<SomeName>Lexer.kt`.
-   1. Delete `.kt` lexer.
-   1. Run `Convert JFlex Lexer to Kotlin` action while having the new `.java` file opened.
-   1. Fix the small problems such as imports in kt file. There should be no major issues; if there are,
-      feel free to complain :)
 
 Parsing algorithm
 -----------------

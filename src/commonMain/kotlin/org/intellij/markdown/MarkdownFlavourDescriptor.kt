@@ -1,4 +1,4 @@
-package org.intellij.markdown.flavours
+package org.intellij.markdown
 
 import org.intellij.markdown.IElementType
 import org.intellij.markdown.html.GeneratingProvider

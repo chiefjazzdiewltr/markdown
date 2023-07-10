@@ -1,4 +1,4 @@
-package org.intellij.markdown.flavours.commonmark
+package org.intellij.markdown.base
 
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.parser.LookaheadText

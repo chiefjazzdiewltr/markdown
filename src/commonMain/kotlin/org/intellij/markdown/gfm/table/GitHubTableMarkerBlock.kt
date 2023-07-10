@@ -1,7 +1,7 @@
-package org.intellij.markdown.flavours.gfm.table
+package org.intellij.markdown.gfm.table
 
-import org.intellij.markdown.flavours.gfm.GFMElementTypes
-import org.intellij.markdown.flavours.gfm.GFMTokenTypes
+import org.intellij.markdown.gfm.GFMElementTypes
+import org.intellij.markdown.gfm.GFMTokenTypes
 import org.intellij.markdown.parser.LookaheadText
 import org.intellij.markdown.parser.ProductionHolder
 import org.intellij.markdown.parser.constraints.MarkdownConstraints
@@ -10,7 +10,6 @@ import org.intellij.markdown.parser.constraints.getCharsEaten
 import org.intellij.markdown.parser.markerblocks.MarkerBlock
 import org.intellij.markdown.parser.markerblocks.MarkerBlockImpl
 import org.intellij.markdown.parser.sequentialparsers.SequentialParser
-import kotlin.text.Regex
 
 class GitHubTableMarkerBlock(pos: LookaheadText.Position,
                              constraints: MarkdownConstraints,
